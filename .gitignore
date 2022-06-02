@@ -1,0 +1,4 @@
+.idea/
+venv/
+data.csv
+example-notebook.ipynb

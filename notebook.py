@@ -43,7 +43,8 @@ Original file is located at
     2.29. [Status](#Status)<br>
 3. [Fair Credit](#Fair-credit)<br>
 4. [Build Model](#Model)<br>
-5. [Evaluate Model](#Evaluate-model)<br>
+5. [Improve Model](#Improve-model)<br>
+6. [Evaluate Model](#Evaluate-model)<br>
 
 ### Notebook setup
 """
@@ -56,6 +57,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import ParameterGrid, StratifiedKFold
+from sklearn.metrics import classification_report
 
 # %matplotlib inline
 
@@ -550,7 +552,7 @@ print (f"iterations ran: {classifier.n_iter_}")
 print (f"Train score: {classifier.score(X_train.to_numpy(), y_train.to_numpy())}")
 print (f"Test score: {classifier.score(X_test.to_numpy(), y_test.to_numpy())}")
 
-"""#### Evaluate Model"""
+"""#### Improve Model"""
 
 parameters = {
     'hidden_layer_sizes': [(20, 20), (25, 25)],
@@ -569,3 +571,9 @@ classifier_improved = cv.best_estimator_
 
 print (f"Train score: {classifier_improved.score(X_train.to_numpy(), y_train.to_numpy())}")
 print (f"Test score: {classifier_improved.score(X_test.to_numpy(), y_test.to_numpy())}")
+
+"""#### Evaluate Model"""
+
+y_pred = cv.predict(X_test.to_numpy())
+
+print(classification_report(y_test, y_pred))

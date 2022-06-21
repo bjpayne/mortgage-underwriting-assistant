@@ -1,0 +1,21 @@
+{% extends "master.html" %}
+{% block title %}Results{% endblock %}
+
+{% block message %}
+    <h4 class="text-center">Message</h4>
+    <p class="text-center"><i>{{query}}</i></p>
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Results</h1>
+
+    <ul id="message-results" class="list-group list-group-flush mb-5">
+        {% for category, classification in classification_result.items() %}
+            {% if classification == 1 %}
+                <li class="list-group-item list-group-item-danger text-center">{{category.replace('_', ' ').title()}}</li>
+            {% else %}
+                <li class="list-group-item list-group-item-light text-center">{{category.replace('_', ' ').title()}}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}

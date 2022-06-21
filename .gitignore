@@ -1,5 +1,5 @@
 .idea/
 venv/
-data.csv
+data/data.csv
 example-notebook.ipynb
 example-report.pdf

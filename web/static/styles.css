@@ -1,3 +1,7 @@
+:root {
+  --main-bg-color: ;
+}
+
 html, body {
     display: flex;
     height: 100vh;
@@ -14,4 +18,10 @@ main {
     height: 20px;
     width: auto;
     margin-right: 10px;
+}
+
+div#sidebar {
+    background: blue;
+    color: white;
+    height: calc(100vh - 168px);
 }

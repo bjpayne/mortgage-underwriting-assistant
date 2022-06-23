@@ -1,19 +1,24 @@
 import json
 import plotly
 import sqlite3
-
 import joblib
-
 import pandas as pd
 
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar, Pie
+from datetime import datetime
 
 # load model
 # model = joblib.load("../models/model.sav")
 
 app = Flask(__name__)
+
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
+
 
 @app.route('/')
 def hello_world():  # put application's code here

@@ -1,6 +1,5 @@
 # import libraries
 import pickle
-import nltk
 import sqlite3
 import sys
 
@@ -13,15 +12,9 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 
-from models.tokenizer import tokenize
-
-
-def load_data(database_filepath):
+def load_data():
     """
         Load the data into the script
-
-        INPUT
-        database_filepath - string
 
         OUTPUT
         X - Pandas.DataFrame
@@ -91,15 +84,9 @@ def save_model(model, model_filepath):
 
 def main():
     if len(sys.argv) == 3:
-        # Download nltk packages
-        nltk.download('punkt')
-        nltk.download('wordnet')
-        nltk.download('stopwords')
-        nltk.download('averaged_perceptron_tagger')
-
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
-        X, y, category_names = load_data(database_filepath)
+        X, y, category_names = load_data()
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=40)
 

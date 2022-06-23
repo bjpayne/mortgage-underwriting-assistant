@@ -10,6 +10,8 @@
               integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
               crossorigin="anonymous"
         >
+
+        <!-- Bootstrap icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -22,40 +24,121 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="/"><img src="{{ url_for('static', filename='icon.png') }}">AutoWrite</a>
-                <a class="nav-link align-end" href="https://github.com/bjpayne/mortgage-underwriting-assistant">Github</a>
+                <a class="nav-link align-end" href="https://github.com/bjpayne/mortgage-underwriting-assistant"><i class="bi bi-github"></i></a>
             </div>
         </nav>
 
-        <main class="container mb-5" id="app">
-            <div class="row">
+        <main class="mb-5 d-flex" id="app">
+            <div class="container">
                 <div class="col-12">
-                    <form action="/underwrite" method="get" class="form">
+                    <form action="/underwrite" method="post" class="needs-validation" novalidate>
                         <div class="row">
                             <div class="col-3">
-                                <div class="mb-3 float-label-group">
-                                    <label for="loan-limit" class="form-label" :class="{ in: query.length > 0 }">
-                                        Loan limit
-                                    </label>
-
-                                    <select name="loan_limit" id="loan-limit" class="form-control input-sm">
+                                <div class="form-floating mb-3">
+                                    <select name="loan_limit" id="loan-limit" class="form-select form-select-sm"
+                                            required>
+                                        <option value="">-- Select One --</option>
+                                        <option value="0">Other</option>
                                         <option value="1">Conforming</option>
                                         <option value="2">Non-Conforming</option>
                                     </select>
+                                    <label for="loan-limit">Loan Limit</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <select name="pre_approval" id="pre-approval" class="form-select form-select-sm"
+                                            required
+                                    >
+                                        <option value="0">No PreApproval</option>
+                                        <option value="1">Pre Approved</option>
+                                    </select>
+                                    <label for="pre-approval">Pre Approval</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <select name="loan_type" id="loan-type" class="form-select form-select-sm"
+                                            required
+                                    >
+                                        <option value="1">Fixed</option>
+                                        <option value="2">ARM</option>
+                                        <option value="3">Construction</option>
+                                        <option value="4">RD</option>
+                                    </select>
+                                    <label for="loan-type">Loan Type</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <select name="loan_purpose" id="loan-purpose" class="form-select form-select-sm"
+                                            required
+                                    >
+                                        <option value="1">Purchase</option>
+                                        <option value="2">Refinance</option>
+                                    </select>
+                                    <label for="loan-purpose">Loan Purpose</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <select name="line_of_credit" id="line-of-credit" class="form-select form-select-sm"
+                                            required
+                                    >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                    <label for="line-of-credit">Line of Credit</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <select name="commercial_loan" id="commercial-loan"
+                                            class="form-select form-select-sm"
+                                            required
+                                    >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                    <label for="commercial-loan">Commercial Loan</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="loan_amount" id="loan-amount"
+                                           class="form-control form-control-sm" required placeholder="0.00"
+                                    >
+                                    <label for="loan-amount">Loan amount</label>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="interest_rate" id="interest-rate"
+                                           class="form-control form-control-sm" required placeholder="0.0000"
+                                           data-mask="0.0000"
+                                    >
+                                    <label for="interest-rate">Interest rate</label>
                                 </div>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Classify Message</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Underwrite</button>
                     </form>
                 </div>
             </div>
-
-            {% block message %}
-            {% endblock %}
         </main>
 
-        <footer>
+        <footer class="text-center">
             <a href="https://www.flaticon.com/free-animated-icons/user" title="user animated icons">User animated icons created by Freepik - Flaticon</a>
+            <br>
+            &copy; Ben Payne {{ now.year }}
         </footer>
 
         <!-- Jquery -->
@@ -77,14 +160,20 @@
         <!-- Plotly -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+        <!-- Accounting.js -->
+        <script src="{{ url_for('static', filename='accounting.min.js') }}"></script>
+
+        <!-- jQuery Mask -->
+        <script src="{{ url_for('static', filename='jquery.mask.min.js') }}"></script>
+
         <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
-        <script type="text/javascript">
-            let graphs = {{graphJSON | safe}};
+<!--        <script type="text/javascript">-->
+<!--            let graphs = {{graphJSON | safe}};-->
 
-            for(let i in graphs) {
-                Plotly.plot('graph-'+i, graphs[i].data, graphs[i].layout);
-            }
-        </script>
+<!--            for(let i in graphs) {-->
+<!--                Plotly.plot('graph-'+i, graphs[i].data, graphs[i].layout);-->
+<!--            }-->
+<!--        </script>-->
     </body>
 </html>

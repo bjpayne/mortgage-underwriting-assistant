@@ -34,6 +34,9 @@ def loan_limit(dataset):
     dataset['loan_limit'].fillna(0, inplace=True)
     dataset['loan_limit'].replace({'cf': 1, 'ncf': 2}, inplace=True)
 
+def preapproval(dataset):
+    dataset
+
 
 def save_data(df):
     df.to_csv('processed_data.csv')

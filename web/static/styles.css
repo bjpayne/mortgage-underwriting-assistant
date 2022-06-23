@@ -1,5 +1,5 @@
 :root {
-  --main-bg-color: ;
+  --main-bg-color: blue;
 }
 
 html, body {
@@ -21,7 +21,9 @@ main {
 }
 
 div#sidebar {
-    background: blue;
+    background: #33cccc;
     color: white;
-    height: calc(100vh - 168px);
+    height: calc(100vh - 52px);
+    margin-top: -20px;
+    padding: 20px;
 }

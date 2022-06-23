@@ -31,135 +31,140 @@
         <main class="mb-5 d-flex" id="app">
             <div class="container-fluid">
                 <div class="row">
-                    <div id="sidebar" class="d-none d-md-block col col-md-2 vh-100">
+                    <div id="sidebar" class="d-none d-md-block col col-md-2">
                         <p>Hello world</p>
                     </div>
-                    <div class="col col-sm-12 col-md-10">
-                        <form action="/underwrite" method="post" class="needs-validation" novalidate>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select name="loan_limit" id="loan-limit" class="form-select form-select-sm"
-                                                required>
-                                            <option value="">-- Select One --</option>
-                                            <option value="0">Other</option>
-                                            <option value="1">Conforming</option>
-                                            <option value="2">Non-Conforming</option>
-                                        </select>
-                                        <label for="loan-limit">Loan Limit</label>
+                    <div id="content" class="d-flex flex-column col col-sm-12 col-md-10">
+                        <div id="underwriting-form" class="flex-grow-1">
+                            <form action="/underwrite" method="post" class="needs-validation" novalidate>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="loan_limit" id="loan-limit" class="form-select form-select-sm"
+                                                    required>
+                                                <option value="">-- Select One --</option>
+                                                <option value="0">Other</option>
+                                                <option value="1">Conforming</option>
+                                                <option value="2">Non-Conforming</option>
+                                            </select>
+                                            <label for="loan-limit">Loan Limit</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="pre_approval" id="pre-approval"
+                                                    class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="0">No PreApproval</option>
+                                                <option value="1">Pre Approved</option>
+                                            </select>
+                                            <label for="pre-approval">Pre Approval</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="loan_type" id="loan-type" class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="1">Fixed</option>
+                                                <option value="2">ARM</option>
+                                                <option value="3">Construction</option>
+                                                <option value="4">RD</option>
+                                            </select>
+                                            <label for="loan-type">Loan Type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="loan_purpose" id="loan-purpose"
+                                                    class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="1">Purchase</option>
+                                                <option value="2">Refinance</option>
+                                            </select>
+                                            <label for="loan-purpose">Loan Purpose</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="line_of_credit" id="line-of-credit"
+                                                    class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label for="line-of-credit">Line of Credit</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="commercial_loan" id="commercial-loan"
+                                                    class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label for="commercial-loan">Commercial Loan</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="loan_amount" id="loan-amount"
+                                                   class="form-control form-control-sm" required placeholder="0.00"
+                                            >
+                                            <label for="loan-amount">Loan amount</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="interest_rate" id="interest-rate"
+                                                   class="form-control form-control-sm" required placeholder="0.0000"
+                                                   data-mask="0.0000"
+                                            >
+                                            <label for="interest-rate">Interest rate</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="interest_rate_spread" id="interest-rate-spread"
+                                                   class="form-control form-control-sm" required placeholder="0.0000"
+                                                   data-mask="0.0000"
+                                            >
+                                            <label for="interest-rate-spread">Interest rate spread</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select name="pre_approval" id="pre-approval" class="form-select form-select-sm"
-                                                required
-                                        >
-                                            <option value="0">No PreApproval</option>
-                                            <option value="1">Pre Approved</option>
-                                        </select>
-                                        <label for="pre-approval">Pre Approval</label>
-                                    </div>
-                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Underwrite</button>
+                            </form>
+                        </div>
 
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select name="loan_type" id="loan-type" class="form-select form-select-sm"
-                                                required
-                                        >
-                                            <option value="1">Fixed</option>
-                                            <option value="2">ARM</option>
-                                            <option value="3">Construction</option>
-                                            <option value="4">RD</option>
-                                        </select>
-                                        <label for="loan-type">Loan Type</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select name="loan_purpose" id="loan-purpose" class="form-select form-select-sm"
-                                                required
-                                        >
-                                            <option value="1">Purchase</option>
-                                            <option value="2">Refinance</option>
-                                        </select>
-                                        <label for="loan-purpose">Loan Purpose</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select name="line_of_credit" id="line-of-credit"
-                                                class="form-select form-select-sm"
-                                                required
-                                        >
-                                            <option value="0">No</option>
-                                            <option value="1">Yes</option>
-                                        </select>
-                                        <label for="line-of-credit">Line of Credit</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <select name="commercial_loan" id="commercial-loan"
-                                                class="form-select form-select-sm"
-                                                required
-                                        >
-                                            <option value="0">No</option>
-                                            <option value="1">Yes</option>
-                                        </select>
-                                        <label for="commercial-loan">Commercial Loan</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" name="loan_amount" id="loan-amount"
-                                               class="form-control form-control-sm" required placeholder="0.00"
-                                        >
-                                        <label for="loan-amount">Loan amount</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" name="interest_rate" id="interest-rate"
-                                               class="form-control form-control-sm" required placeholder="0.0000"
-                                               data-mask="0.0000"
-                                        >
-                                        <label for="interest-rate">Interest rate</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" name="interest_rate_spread" id="interest-rate-spread"
-                                               class="form-control form-control-sm" required placeholder="0.0000"
-                                               data-mask="0.0000"
-                                        >
-                                        <label for="interest-rate-spread">Interest rate spread</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-6 col-lg-3">
-
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary btn-sm">Underwrite</button>
-                        </form>
+                        <footer class="text-center">
+                            <a href="https://www.flaticon.com/free-animated-icons/user" title="user animated icons">User
+                                animated icons created by Freepik - Flaticon</a>
+                            <br>
+                            &copy; Ben Payne {{ now.year }}
+                        </footer>
                     </div>
                 </div>
             </div>
         </main>
-
-        <footer class="text-center">
-            <a href="https://www.flaticon.com/free-animated-icons/user" title="user animated icons">User animated icons created by Freepik - Flaticon</a>
-            <br>
-            &copy; Ben Payne {{ now.year }}
-        </footer>
 
         <!-- Jquery -->
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"

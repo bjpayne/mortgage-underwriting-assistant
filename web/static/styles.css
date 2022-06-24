@@ -1,5 +1,5 @@
 :root {
-  --main-bg-color: blue;
+  --main-bg-color: #33cccc;
 }
 
 html, body {
@@ -7,6 +7,10 @@ html, body {
     height: 100vh;
     flex-direction: column;
 }
+
+h1, h2, h3, h4, h5, h6 { font-weight: 400 }
+
+a { color: var(--main-bg-color) }
 
 main {
     display: flex;
@@ -20,10 +24,53 @@ main {
     margin-right: 10px;
 }
 
+.nav-link { color: var(--main-bg-color) }
+
 div#sidebar {
-    background: #33cccc;
+    background: var(--main-bg-color);
     color: white;
     height: calc(100vh - 52px);
-    margin-top: -20px;
-    padding: 20px;
+}
+
+div#sidebar>.sidebar-link {
+    background: #3b9b9b;
+    border-left: 10px solid #306a6a;
+    margin: 20px -12px;
+    padding: 15px 20px;
+    position: relative;
+}
+
+div#sidebar>.sidebar-link:after {
+    background: #3b9b9b;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    content: "";
+    display: block;
+    height: 54px;
+    position: absolute;
+    right: -5px;
+    top: 0;
+    width: 10px;
+}
+
+div#sidebar>.sidebar-link a {
+    color: #fff;
+    text-decoration: none;
+}
+
+div#content { padding: 0 3% }
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--main-bg-color);
+    border-color: var(--main-bg-color);
+}
+
+.btn-check:focus+.btn-primary,
+.btn-primary:focus,
+.btn-primary:hover {
+    color: #fff;
+    background-color: var(--main-bg-color);
+    border-color: var(--main-bg-color);
+    box-shadow: 0 2px 0 0 rgb(81 179 179);
 }

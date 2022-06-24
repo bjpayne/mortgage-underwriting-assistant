@@ -1,6 +1,6 @@
-let loanAmountInput = $('#loan-amount')
+let dollarAmountInput = $('input.dollar-amount')
 
-loanAmountInput.focus(function () {
+dollarAmountInput.focus(function () {
   let input = $(this);
 
   if (input.val().length === 0) {
@@ -10,10 +10,32 @@ loanAmountInput.focus(function () {
   input.val(accounting.unformat(input.val()))
 });
 
-loanAmountInput.blur(function () {
+dollarAmountInput.blur(function () {
   let input = $(this);
 
   input.val(accounting.formatMoney(accounting.unformat(input.val())))
+});
+
+$('#loan-amount, #property-value').blur(function (e) {
+  let loanAmount = $('#loan-amount');
+
+  let loanAmountValue = accounting.unformat(loanAmount.val());
+
+  let propertyValue = $('#property-value');
+
+  let propertyValueValue = accounting.unformat(propertyValue.val())
+
+  let ltv = $('#ltv');
+
+  if (loanAmountValue > 0 && propertyValueValue > 0) {
+    ltv.val(Math.min((loanAmountValue / propertyValueValue) * 100, 100));
+
+    ltv.val(accounting.toFixed(ltv.val(), 2));
+
+    return;
+  }
+
+  ltv.val(0);
 });
 
 (function () {

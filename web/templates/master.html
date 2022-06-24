@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="/"><img src="{{ url_for('static', filename='icon.png') }}">AutoWrite</a>
                 <a class="nav-link align-end" href="https://github.com/bjpayne/mortgage-underwriting-assistant"><i class="bi bi-github"></i></a>
@@ -32,23 +32,20 @@
             <div class="container-fluid">
                 <div class="row">
                     <div id="sidebar" class="d-none d-md-block col col-md-2">
-                        <p>Hello world</p>
+                        <div class="sidebar-link">
+                            <a href="/">AutoWrite Dashboard</a>
+                        </div>
                     </div>
-                    <div id="content" class="d-flex flex-column col col-sm-12 col-md-10">
+                    <div id="content" class="d-flex flex-column col col-sm-12 col-md-10 mt-3">
+                        <h3 class="mb-2">AutoWrite Dashboard</h3>
                         <div id="underwriting-form" class="flex-grow-1">
-                            <form action="/underwrite" method="post" class="needs-validation" novalidate>
+                            <form action="/auto-write" method="post" class="needs-validation" novalidate>
+
+                                <!-- Application -->
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-6 col-lg-3">
-                                        <div class="form-floating mb-3">
-                                            <select name="loan_limit" id="loan-limit" class="form-select form-select-sm"
-                                                    required>
-                                                <option value="">-- Select One --</option>
-                                                <option value="0">Other</option>
-                                                <option value="1">Conforming</option>
-                                                <option value="2">Non-Conforming</option>
-                                            </select>
-                                            <label for="loan-limit">Loan Limit</label>
-                                        </div>
+                                    <div class="col-12">
+                                        <p class="lead mb-2">Application</p>
+                                        <hr class="mt-0">
                                     </div>
 
                                     <div class="col-xs-12 col-sm-6 col-lg-3">
@@ -61,6 +58,239 @@
                                                 <option value="1">Pre Approved</option>
                                             </select>
                                             <label for="pre-approval">Pre Approval</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="line_of_credit" id="line-of-credit"
+                                                    class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label for="line-of-credit">Line of Credit</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="negative_amortization" id="negative-amortization"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label for="negative-amortization">Negative amortization</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control form-control-sm dollar-amount"
+                                                   name="upfront_charges" id="upfront-charges"
+                                                   required placeholder="0.00"
+                                            >
+                                            <label for="upfront-charges">Upfront charges</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="interest_only" id="interest-only"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label for="interest-only">Interest only</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="application_taken" id="application-taken"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="1">Direct</option>
+                                                <option value="2">Indirect</option>
+                                            </select>
+                                            <label for="application-taken">Application taken</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="lump_sum_payment" id="lump-sum-payment"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <label for="lump-sum-payment">Lump sum payment</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="deposit_type" id="deposit-type"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="1">Direct</option>
+                                                <option value="2">Indirect</option>
+                                            </select>
+                                            <label for="deposit-type">Deposit type</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Borrower -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="lead mb-2">Borrower</p>
+                                        <hr class="mt-0">
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="income" id="income"
+                                                   class="form-control form-control-sm dollar-amount"
+                                                   required placeholder="0.00"
+                                            >
+                                            <label for="income">Income</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="credit_type" id="credit-type" class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="1">Experian</option>
+                                                <option value="2">Equifax</option>
+                                                <option value="3">TransUnion</option>
+                                                <option value="4">CIB / CRIF</option>
+                                            </select>
+                                            <label for="credit-type">Credit type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="credit_score" id="credit-score"
+                                                   class="form-control form-control-sm" placeholder="000"
+                                                   data-mask="000"
+                                            >
+                                            <label for="credit-score">Credit score</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="co_borrower_credit_type" id="co-borrower-credit-type"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="1">Experian</option>
+                                                <option value="2">Equifax</option>
+                                                <option value="3">TransUnion</option>
+                                                <option value="4">CIB / CRIF</option>
+                                            </select>
+                                            <label for="co-borrower-credit-type">CoBorrower Credit type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="dti" id="dti" class="form-control form-control-sm"
+                                                   required placeholder="00.00" data-mask="00.00"
+                                            >
+                                            <label for="dti">DTI</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="lead mb-2">Property</p>
+                                        <hr class="mt-0">
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="property_type" id="property-type"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="1">Home</option>
+                                                <option value="2">Land</option>
+                                            </select>
+                                            <label for="property-type">Property type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="property_value" id="property-value"
+                                                   class="form-control form-control-sm dollar-amount" placeholder="0.00"
+                                            >
+                                            <label for="property-value">Property value</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="construction_type" id="construction-type"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="1">Single Borrower</option>
+                                                <option value="2">Multi Home</option>
+                                            </select>
+                                            <label for="construction-type">Construction type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="occupancy_type" id="occupancy-type"
+                                                    class="form-select form-select-sm" required
+                                            >
+                                                <option value="1">Primary Residence</option>
+                                                <option value="2">Secondary Residence</option>
+                                                <option value="3">Investment Property</option>
+                                            </select>
+                                            <label for="occupancy-type">Occupancy type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="units" id="units" class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                            <label for="units">Units</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="lead mb-2">Loan</p>
+                                        <hr class="mt-0">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <select name="loan_limit" id="loan-limit" class="form-select form-select-sm"
+                                                    required>
+                                                <option value="0">Other</option>
+                                                <option value="1">Conforming</option>
+                                                <option value="2">Non-Conforming</option>
+                                            </select>
+                                            <label for="loan-limit">Loan Limit</label>
                                         </div>
                                     </div>
 
@@ -93,19 +323,6 @@
 
                                     <div class="col-xs-12 col-sm-6 col-lg-3">
                                         <div class="form-floating mb-3">
-                                            <select name="line_of_credit" id="line-of-credit"
-                                                    class="form-select form-select-sm"
-                                                    required
-                                            >
-                                                <option value="0">No</option>
-                                                <option value="1">Yes</option>
-                                            </select>
-                                            <label for="line-of-credit">Line of Credit</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xs-12 col-sm-6 col-lg-3">
-                                        <div class="form-floating mb-3">
                                             <select name="commercial_loan" id="commercial-loan"
                                                     class="form-select form-select-sm"
                                                     required
@@ -120,7 +337,8 @@
                                     <div class="col-xs-12 col-sm-6 col-lg-3">
                                         <div class="form-floating mb-3">
                                             <input type="text" name="loan_amount" id="loan-amount"
-                                                   class="form-control form-control-sm" required placeholder="0.00"
+                                                   class="form-control form-control-sm dollar-amount"
+                                                   required placeholder="0.00"
                                             >
                                             <label for="loan-amount">Loan amount</label>
                                         </div>
@@ -147,11 +365,34 @@
                                     </div>
 
                                     <div class="col-xs-12 col-sm-6 col-lg-3">
-
+                                        <div class="form-floating mb-3">
+                                            <select name="term" id="term" class="form-select form-select-sm"
+                                                    required
+                                            >
+                                                <option value="60">5 year</option>
+                                                <option value="120">10 year</option>
+                                                <option value="180">15 year</option>
+                                                <option value="240">20 year</option>
+                                                <option value="360">30 year</option>
+                                            </select>
+                                            <label for="term">Term</label>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <button type="submit" class="btn btn-primary btn-sm">Underwrite</button>
+                                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="ltv" id="ltv"
+                                                   class="form-control form-control-sm"
+                                                   required placeholder="00.00" data-mask="00.00"
+                                                   readonly
+                                            >
+                                            <label for="ltv">LTV</label>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- end form row -->
+
+                                <button type="submit" class="btn btn-primary btn-sm">AutoWrite</button>
                             </form>
                         </div>
 

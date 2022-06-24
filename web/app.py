@@ -69,7 +69,7 @@ def classify():
         'interest_rate_spread',
         'upfront_charges',
         'term',
-        'negative_ammortization',
+        'negative_amortization',
         'interest_only',
         'lump_sum_payment',
         'property_value',

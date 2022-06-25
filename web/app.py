@@ -81,6 +81,8 @@ def auto_write():
         'income_data': results_provider.income_data(),
         'credit_score_notes': results_provider.credit_score_notes(),
         'credit_score_data': results_provider.credit_score_data(),
+        'property_value_notes': results_provider.property_value_notes(),
+        'property_value_data': results_provider.property_value_data(),
     }
 
     # This will render the results.html Please see that file.

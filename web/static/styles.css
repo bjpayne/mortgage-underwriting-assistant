@@ -89,7 +89,20 @@ div#content { padding: 0 3% }
     text-transform: uppercase;
 }
 
+.modal-header>h5[id$="fullscreen-title"] {
+    font-family: monospace;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 .card>.card-notes {
     font-family: monospace;
     font-size: 14px;
 }
+
+.fullscreen-plot { cursor: pointer }
+.fullscreen-plot:hover { color: var(--main-bg-color) }
+
+.modal-footer>.bi-fullscreen-exit { cursor: pointer }
+.modal-footer>.bi-fullscreen-exit:hover { color: var(--main-bg-color) }

@@ -52,7 +52,7 @@ class ResultsProvider:
         percentage = (series[upfront_charges] / self.dataset[(self.dataset['status'] == self.status)]['upfront_charges']
                       .shape[0]) * 100
 
-        percentage = np.round(percentage, 4)
+        percentage = np.round(percentage, 2)
 
         note = f"{percentage}% of {self.status_text} {note}"
 
@@ -128,6 +128,38 @@ class ResultsProvider:
         data = {
             'x': self.dataset[self.dataset['status'] == self.status]['credit_score'].unique().tolist(),
             'y': self.dataset[self.dataset['status'] == self.status]['credit_score'].value_counts().to_list()
+        }
+
+        return data
+
+    def property_value_notes(self):
+        upfront_charges = float(re.sub('[^0-9.]', '', self.request.form['property_value']))
+
+        note = f" applications have a property value of {self.request.form['property_value']}"
+
+        series = self.dataset[(self.dataset['status'] == self.status) &
+                              (self.dataset['property_value'] == upfront_charges)]['property_value'] \
+            .value_counts(normalize=True)
+
+        if series.empty or series[0] == 0:
+            return f"0% of {self.status_text} {note}"
+
+        percentage = (series[upfront_charges] / self.dataset[(self.dataset['status'] == self.status)]['property_value']
+                      .shape[0]) * 100
+
+        percentage = np.round(percentage, 2)
+
+        note = f"{percentage}% of {self.status_text} {note}"
+
+        return note
+
+    def property_value_data(self):
+        bins = range(0, int(self.dataset[self.dataset['status'] == self.status]['property_value'].max()), 2500)
+
+        data = {
+            'x': [*bins],
+            'y': self.dataset[self.dataset['status'] == self.status]['property_value'].value_counts(bins=bins)
+                .to_list(),
         }
 
         return data

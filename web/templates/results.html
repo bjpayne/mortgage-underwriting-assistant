@@ -17,7 +17,12 @@
             </h5>
             <div class="card-body">
                 <div id="pre-approval-plot"></div>
-                <div class="card-notes">{{ pre_approval_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ pre_approval_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#pre-approval-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -30,7 +35,12 @@
             </h5>
             <div class="card-body">
                 <div id="line-of-credit-plot"></div>
-                <div class="card-notes">{{ line_of_credit_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ line_of_credit_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#line-of-credit-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -99,13 +109,85 @@
             </div>
         </div>
     </div>
+
+    <!-- Property value -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>Property value:</span> <span>{{ form_data['property_value'] }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="property-value-plot"></div>
+                <div class="card-notes">{{ property_value_notes }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="fullscreen-result-plots">
+    <!-- Pre approval fullscreen -->
+    <div class="modal fade" id="pre-approval-fullscreen" tabindex="-1" aria-labelledby="pre-approval-fullscreen-title" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="pre-approval-fullscreen-title"
+                    >
+                        <span>Pre Approved?</span> <span>{{ 'No' if form_data['pre_approval'] == '0' else 'Yes' }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="pre-approval-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Line of credit fullscreen -->
+    <div class="modal fade" id="line-of-credit-fullscreen" tabindex="-1"
+         aria-labelledby="line-of-credit-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="line-of-credit-fullscreen-title"
+                    >
+                        <span>Line of credit?</span> <span>{{ 'No' if form_data['line_of_credit'] == '0' else 'Yes' }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="line-of-credit-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block page_scripts %}
 <script>
     let layout = {
         height: 300,
-        width: 300
+        width: 300,
+        font: {
+            family: 'monospace',
+            size: 10,
+        }
+    };
+
+    let layoutFullscreen = {
+        height: 700,
+        width: 700,
+        font: {
+            family: 'monospace',
+            size: 14,
+        }
     };
 
     // Pre approval
@@ -125,6 +207,7 @@
         }];
 
         Plotly.newPlot('pre-approval-plot', data, layout);
+        Plotly.newPlot('pre-approval-plot-fullscreen', data, layoutFullscreen);
     })();
 
     // Line of credit
@@ -144,6 +227,7 @@
         }];
 
         Plotly.newPlot('line-of-credit-plot', data, layout);
+        Plotly.newPlot('line-of-credit-plot-fullscreen', data, layoutFullscreen);
     })();
 
     // Negative amortization
@@ -182,7 +266,7 @@
         // clone layout object
         let _layout = {...layout}
 
-        _layout['title'] = 'apps by upfront charge range';
+        _layout['title'] = 'Apps by upfront charge range';
 
         Plotly.newPlot('upfront-charges-plot', data, _layout);
     })();
@@ -223,7 +307,7 @@
         // clone layout object
         let _layout = {...layout}
 
-        _layout['title'] = 'apps by income range';
+        _layout['title'] = 'Apps by income range';
 
         Plotly.newPlot('income-plot', data, _layout);
     })();
@@ -245,9 +329,31 @@
         // clone layout object
         let _layout = {...layout}
 
-        _layout['title'] = 'apps by credit score';
+        _layout['title'] = 'Apps by credit score';
 
         Plotly.newPlot('credit-score-plot', data, _layout);
+    })();
+
+    // Property value
+    (function () {
+        let x = {{ property_value_data['x'] }}
+        let y = {{ property_value_data['y'] }}
+
+        let data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: '#33cccc'
+            }
+        }];
+
+        // clone layout object
+        let _layout = {...layout}
+
+        _layout['title'] = 'Apps by property value ranges';
+
+        Plotly.newPlot('property-value-plot', data, _layout);
     })();
 </script>
 {% endblock %}

@@ -29,7 +29,7 @@ main {
 div#sidebar {
     background: var(--main-bg-color);
     color: white;
-    height: calc(100vh - 52px);
+    min-height: calc(100vh - 52px);
 }
 
 div#sidebar>.sidebar-link {
@@ -73,4 +73,23 @@ div#content { padding: 0 3% }
     background-color: var(--main-bg-color);
     border-color: var(--main-bg-color);
     box-shadow: 0 2px 0 0 rgb(81 179 179);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 3px 1px rgb(0 0 0 / 12%);
+}
+
+.card>.card-header {
+    background: none;
+    border: none;
+    font-family: monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.card>.card-notes {
+    font-family: monospace;
+    font-size: 14px;
 }

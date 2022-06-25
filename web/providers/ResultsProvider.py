@@ -40,21 +40,101 @@ class ResultsProvider:
     def upfront_charges_notes(self):
         upfront_charges = float(re.sub('[^0-9.]', '', self.request.form['upfront_charges']))
 
-        note = f"have an upfront charge of {self.request.form['upfront_charges']}"
+        note = f" applications have an upfront charge of {self.request.form['upfront_charges']}"
 
-        series = self.dataset[self.dataset['upfront_charges'] == 10.25]['upfront_charges'].value_counts(normalize=True)
-
-        percentage = 0
+        series = self.dataset[(self.dataset['status'] == self.status) &
+                              (self.dataset['upfront_charges'] == upfront_charges)]['upfront_charges'] \
+            .value_counts(normalize=True)
 
         if series.empty or series[0] == 0:
-            note = f"{percentage}% of {self.status_text} {note}"
+            return f"0% of {self.status_text} {note}"
 
-            return note
+        percentage = (series[upfront_charges] / self.dataset[(self.dataset['status'] == self.status)]['upfront_charges']
+                      .shape[0]) * 100
 
-        
+        percentage = np.round(percentage, 4)
+
+        note = f"{percentage}% of {self.status_text} {note}"
+
+        return note
+
+    def upfront_charges_data(self):
+        bins = range(0, int(self.dataset[self.dataset['status'] == self.status]['upfront_charges'].max()), 2500)
+
+        data = {
+            'x': [*bins],
+            'y': self.dataset[self.dataset['status'] == self.status]['upfront_charges'].value_counts(bins=bins)
+                .to_list(),
+        }
+
+        return data
+
+    def interest_only_notes(self):
+        note = "are interest only" if self.request.form['interest_only'] == 1 else \
+            "are not interest only"
+
+        percentage = self.binary_distribution_percentage('interest_only')
+
+        note = f"{percentage}% of {self.status_text} files {note}"
+
+        return note
+
+    def income_notes(self):
+        income = float(re.sub('[^0-9.]', '', self.request.form['income']))
+
+        note = f" applicants have an income of {self.request.form['income']}"
+
+        series = self.dataset[(self.dataset['status'] == self.status) &
+                              (self.dataset['income'] == income)]['income'] \
+            .value_counts(normalize=True)
+
+        if series.empty or series[0] == 0:
+            return f"0% of {self.status_text} {note}"
+
+        percentage = (series[income] / self.dataset[(self.dataset['status'] == self.status)]['income']
+                      .shape[0]) * 100
+
+        percentage = np.round(percentage, 4)
+
+        note = f"{percentage}% of {self.status_text} {note}"
+
+        return note
+
+    def income_data(self):
+        bins = range(0, int(self.dataset[self.dataset['status'] == self.status]['income'].max()), 2500)
+
+        data = {
+            'x': [*bins],
+            'y': self.dataset[self.dataset['status'] == self.status]['income'].value_counts(bins=bins)
+                .to_list(),
+        }
+
+        return data
+
+    def credit_score_notes(self):
+        credit_score = int(self.request.form['credit_score'])
+
+        percentage = self.dataset[(self.dataset['status'] == self.status) &
+                                  (self.dataset['credit_score'] == credit_score)]['credit_score'].shape[0] / \
+                     self.dataset[self.dataset['status'] == self.status]['credit_score'].shape[0]
+
+        percentage = np.round(percentage * 100, 2)
+
+        note = f"{percentage}% of applicants have a credit score of {credit_score}"
+
+        return note
+
+    def credit_score_data(self):
+        data = {
+            'x': self.dataset[self.dataset['status'] == self.status]['credit_score'].unique().tolist(),
+            'y': self.dataset[self.dataset['status'] == self.status]['credit_score'].value_counts().to_list()
+        }
+
+        return data
 
     def binary_distribution_percentage(self, form_field):
-        percentage = np.round(self.dataset[self.dataset['status'] == self.status][form_field].value_counts(normalize=True)[
-                     int(self.request.form[form_field])] * 100, 2)
+        percentage = np.round(
+            self.dataset[self.dataset['status'] == self.status][form_field].value_counts(normalize=True)[
+                int(self.request.form[form_field])] * 100, 2)
 
         return percentage

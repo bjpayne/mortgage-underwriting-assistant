@@ -10,7 +10,7 @@
 
 <div id="result-plots" class="row mb-5">
     <!-- Pre approval -->
-    <div class="col-sm-12 col-md-3 d-flex">
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
         <div class="card flex-grow-1">
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 <span>Pre Approved?</span> <span>{{ 'No' if form_data['pre_approval'] == '0' else 'Yes' }}</span>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Line of credit -->
-    <div class="col-sm-12 col-md-3 d-flex">
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
         <div class="card flex-grow-1">
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 <span>Line of credit?</span> <span>{{ 'No' if form_data['line_of_credit'] == '0' else 'Yes' }}</span>
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Negative amortization -->
-    <div class="col-sm-12 col-md-3 d-flex">
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
         <div class="card flex-grow-1">
             <h5 class="card-header d-flex justify-content-between align-items-center">
                 <span>Negative amortization?</span> <span>{{ 'No' if form_data['negative_amortization'] == '0' else 'Yes' }}</span>
@@ -44,6 +44,58 @@
             <div class="card-body">
                 <div id="negative-amortization-plot"></div>
                 <div class="card-notes">{{ negative_amortization_notes }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upfront charges -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>Upfront charges:</span> <span>{{ form_data['upfront_charges'] }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="upfront-charges-plot"></div>
+                <div class="card-notes">{{ upfront_charges_notes }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interest only -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>Interest only?</span> <span>{{ 'No' if form_data['interest_only'] == '0' else 'Yes' }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="interest-only-plot"></div>
+                <div class="card-notes">{{ interest_only_notes }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>Income:</span> <span>{{ form_data['income'] }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="income-plot"></div>
+                <div class="card-notes">{{ income_notes }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credit score -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>Credit score:</span> <span>{{ form_data['credit_score'] }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="credit-score-plot"></div>
+                <div class="card-notes">{{ credit_score_notes }}</div>
             </div>
         </div>
     </div>
@@ -66,7 +118,10 @@
         let data = [{
             values: values,
             labels: ['Yes', 'No'],
-            type: 'pie'
+            type: 'pie',
+            marker: {
+                colors: ['#33cccc', '#3b9b9b']
+            }
         }];
 
         Plotly.newPlot('pre-approval-plot', data, layout);
@@ -82,7 +137,10 @@
         let data = [{
             values: values,
             labels: ['Yes', 'No'],
-            type: 'pie'
+            type: 'pie',
+            marker: {
+                colors: ['#33cccc', '#3b9b9b']
+            }
         }];
 
         Plotly.newPlot('line-of-credit-plot', data, layout);
@@ -98,10 +156,98 @@
         let data = [{
             values: values,
             labels: ['Yes', 'No'],
-            type: 'pie'
+            type: 'pie',
+            marker: {
+                colors: ['#33cccc', '#3b9b9b']
+            }
         }];
 
         Plotly.newPlot('negative-amortization-plot', data, layout);
+    })();
+
+    // Upfront charges
+    (function () {
+        let x = {{ upfront_charges_data['x'] }}
+        let y = {{ upfront_charges_data['y'] }}
+
+        let data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: '#33cccc'
+            }
+        }];
+
+        // clone layout object
+        let _layout = {...layout}
+
+        _layout['title'] = 'apps by upfront charge range';
+
+        Plotly.newPlot('upfront-charges-plot', data, _layout);
+    })();
+
+    // Interest only
+    (function () {
+        let values = [
+            {{ dataset[dataset['status'] == status]['interest_only'].value_counts()[1] }},
+            {{ dataset[dataset['status'] == status]['interest_only'].value_counts()[0] }},
+        ]
+
+        let data = [{
+            values: values,
+            labels: ['Yes', 'No'],
+            type: 'pie',
+            marker: {
+                colors: ['#33cccc', '#3b9b9b']
+            }
+        }];
+
+        Plotly.newPlot('interest-only-plot', data, layout);
+    })();
+
+    // Income
+    (function () {
+        let x = {{ income_data['x'] }}
+        let y = {{ income_data['y'] }}
+
+        let data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: '#33cccc'
+            }
+        }];
+
+        // clone layout object
+        let _layout = {...layout}
+
+        _layout['title'] = 'apps by income range';
+
+        Plotly.newPlot('income-plot', data, _layout);
+    })();
+
+    // Credit score
+    (function () {
+        let x = {{ credit_score_data['x'] }}
+        let y = {{ credit_score_data['y'] }}
+
+        let data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: '#33cccc'
+            }
+        }];
+
+        // clone layout object
+        let _layout = {...layout}
+
+        _layout['title'] = 'apps by credit score';
+
+        Plotly.newPlot('credit-score-plot', data, _layout);
     })();
 </script>
 {% endblock %}

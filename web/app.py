@@ -66,41 +66,26 @@ def auto_write():
     results_provider = ResultsProvider(dataset, status, request)
 
     template_data = {
+        'int': int,
         'status': status,
         'form_data': request.form,
         'dataset': dataset,
         'plot_data': dataset.to_json(),
         'pre_approval_notes': results_provider.pre_approval_notes(),
         'line_of_credit_notes': results_provider.line_of_credit_notes(),
-        'negative_amortization_notes': results_provider.negative_amortization_notes()
+        'negative_amortization_notes': results_provider.negative_amortization_notes(),
+        'upfront_charges_notes': results_provider.upfront_charges_notes(),
+        'upfront_charges_data': results_provider.upfront_charges_data(),
+        'interest_only_notes': results_provider.interest_only_notes(),
+        'income_notes': results_provider.income_notes(),
+        'income_data': results_provider.income_data(),
+        'credit_score_notes': results_provider.credit_score_notes(),
+        'credit_score_data': results_provider.credit_score_data(),
     }
 
     # This will render the results.html Please see that file.
     return render_template('results.html', **template_data)
 
-
-def pre_approval_notes(dataset, status, request):
-    status_text = "approved" if status == 1 else "denied"
-
-    pre_approval_text = "are pre approved" if request.form['pre_approval'] == 1 else "are not pre approved"
-
-    percentage = np.round(dataset[dataset['status'] == status]['pre_approval'].value_counts(normalize=True)[int(request.form['pre_approval'])] * 100, 2)
-
-    note = f"{percentage}% of {status_text} files {pre_approval_text}"
-
-    return note
-
-
-def line_of_credit_notes(dataset, status, request):
-    status_text = "approved" if status == 1 else "denied"
-
-    line_of_credit_text = "are a line of credit" if request.form['line_of_credit'] == 1 else "are not a line of credit"
-
-    percentage = np.round(dataset[dataset['status'] == status]['line_of_credit'].value_counts(normalize=True)[int(request.form['line_of_credit'])] * 100, 2)
-
-    note = f"{percentage}% of {status_text} files {line_of_credit_text}"
-
-    return note
 
 def main():
     app.run(host='127.0.0.1', port=3000, debug=True)

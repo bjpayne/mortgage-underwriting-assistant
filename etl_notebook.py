@@ -305,9 +305,9 @@ dataset['neg_ammortization'].fillna(0, inplace=True)
 
 dataset['neg_ammortization'].replace({'not_neg': 0, 'neg_amm': 1}, inplace=True)
 
-dataset.rename(columns={'neg_ammortization': 'negative_ammortization'}, inplace=True)
+dataset.rename(columns={'neg_ammortization': 'negative_amortization'}, inplace=True)
 
-dataset['negative_ammortization'].unique()
+dataset['negative_amortization'].unique()
 
 """#### Interest only"""
 
@@ -655,3 +655,11 @@ print(classification_report(y_test, y_pred))
 filename = 'model.sav'
 
 pickle.dump(cv, open(filename, 'wb'))
+
+prediction_test = X_test.to_numpy()
+
+prediction_test[0]
+
+print(cv.predict(prediction_test[2].reshape(1, -1)))
+
+y_test[2]

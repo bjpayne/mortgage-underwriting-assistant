@@ -1,76 +1,106 @@
 # import libraries
 import pickle
-import sqlite3
-import sys
 
 import pandas as pd
 
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.multioutput import MultiOutputClassifier
+from sklearn.neural_network import MLPClassifier
+
 
 def load_data():
     """
-        Load the data into the script
+    Load the data into the script
 
-        OUTPUT
-        X - Pandas.DataFrame
-        y - Pandas.DataFrame
-        category_names = Pandas.Series
+    OUTPUT
+    dataset - Pandas.DataFrame
     """
-    conn = sqlite3.connect(database_filepath)
-    df = pd.read_sql('SELECT * FROM categorized_messages', conn)
+    dataset = pd.read_csv('../data/processed_data.csv')
 
-    X = df['message']
-    y = df.drop(['index', 'id', 'message', 'original', 'genre'], axis=1).copy()
+    y = dataset["status"].copy()
+    X = dataset.drop(["status", ], axis=1, inplace=False).copy()
 
-    y.fillna(0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=40)
 
-    category_names = y.columns
+    X_train.reset_index(inplace=True, drop=True)
+    X_test.reset_index(inplace=True, drop=True)
+    y_train.reset_index(inplace=True, drop=True)
+    y_test.reset_index(inplace=True, drop=True)
 
-    return X, y, category_names
+    return dataset, X_train, X_test, y_train, y_test
 
 
-def build_model():
+def build_model(X_train, X_test, y_train, y_test):
     """
-        Builds the ML pipeline to use to train the model.
+    Build the MLPClassifier
 
-        OUTPUT
-        pipeline sklearn.Pipeline
+    OUTPUT
+    pipeline sklearn.Pipeline
     """
-    pipeline = Pipeline([
-        ('vect', CountVectorizer(tokenizer=tokenize)),
-        ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(RandomForestClassifier()))
-    ])
+    # batch size
+    max_iter = 10000
 
+    classifier = MLPClassifier(
+        hidden_layer_sizes=(20, 20),  # number of neurons in the perceptron
+        early_stopping=True,  # after n_iter_no_change epochs stop fitting
+        n_iter_no_change=50,  # number of epochs to stop after
+        max_iter=max_iter  # total number of epochs
+    )
+
+    print(classifier.fit(X_train.to_numpy(), y_train.to_numpy()))
+
+    print(f"iterations ran: {classifier.n_iter_}")
+    print(f"Train score: {classifier.score(X_train.to_numpy(), y_train.to_numpy())}")
+    print(f"Test score: {classifier.score(X_test.to_numpy(), y_test.to_numpy())}")
+
+    return classifier
+
+
+def improve_model(classifier, X_train, y_train, X_test, y_test):
+    """
+    Improve the classifier with GridSearchCV
+
+    OUTPUT
+    pipeline sklearn.Pipeline
+    """
     parameters = {
-        'vect__max_df': [0.7, 0.8, 0.9],
-        'clf__estimator__n_estimators': [50, 75, 100]
+        'hidden_layer_sizes': [(20, 20), (25, 25)],
+        'learning_rate_init': [.001, .003, .004],
+        'tol': [1e-05, 5e-05, 1e-04],
     }
 
-    cv = GridSearchCV(pipeline, param_grid=parameters, cv=3, verbose=3, n_jobs=-1)
+    cv = GridSearchCV(classifier, param_grid=parameters, cv=3, verbose=5, n_jobs=-1, return_train_score=True)
+
+    print(cv.fit(X_train.to_numpy(), y_train.to_numpy()))
+    print(f"recommended estimator: {cv.best_estimator_}")
+    print(f"recommended parameters: {cv.best_params_}")
+    print(f"best score: {cv.best_score_}")
+
+    classifier_improved = cv.best_estimator_
+
+    print(f"Train score: {classifier_improved.score(X_train.to_numpy(), y_train.to_numpy())}")
+    print(f"Test score: {classifier_improved.score(X_test.to_numpy(), y_test.to_numpy())}")
 
     return cv
 
-def evaluate_model(model, X_test, Y_test, category_names):
+
+
+def evaluate_model(cv, X_test, y_test):
     """
-        Evaluate the model and print out a classification report
+    Evaluate the model and print out a classification report
 
-        INPUT
-        model - sklearn.Pipeline
-        X_test - sklearn.List
-        Y_test - sklearn.List
-        category_names - Pandas.Series
+    INPUT
+    model - sklearn.Pipeline
+    X_test - sklearn.List
+    Y_test - sklearn.List
     """
-    Y_pred = model.predict(X_test)
+    y_pred = cv.predict(X_test.to_numpy())
 
-    print(classification_report(Y_test, Y_pred, target_names=category_names))
+    print(classification_report(y_test, y_pred))
+    print()
 
-def save_model(model, model_filepath):
+
+def save_model(model):
     """
         Save the completed model for re-use
 
@@ -78,37 +108,26 @@ def save_model(model, model_filepath):
         model - sklearn.Pipeline
         model_filepath - string
     """
-    filename = model_filepath
+    filename = 'model.sav';
 
     pickle.dump(model, open(filename, 'wb'))
 
+
 def main():
-    if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]
-        print('Loading data...\n    DATABASE: {}'.format(database_filepath))
-        X, y, category_names = load_data()
+    print('Loading cleaned data...')
+    dataset, X_train, X_test, y_train, y_test = load_data()
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=40)
+    print('Building the model...')
+    classifier = build_model(X_train, X_test, y_train, y_test)
 
-        print('Building model...')
-        model = build_model()
-        
-        print('Training model...')
-        model.fit(X_train, y_train)
+    print('Grid search...')
+    cv = improve_model(classifier, X_train, y_train, X_test, y_test)
 
-        print('Evaluating model...')
-        evaluate_model(model, X_test, y_test, category_names)
+    print('Evaluate the model...')
+    evaluate_model(cv, X_test, y_test)
 
-        print('Saving model...\n    MODEL: {}'.format(model_filepath))
-        save_model(model, model_filepath)
-
-        print('Trained model saved!')
-
-    else:
-        print('Please provide the filepath of the disaster messages database '
-              'as the first argument and the filepath of the pickle file to '
-              'save the model to as the second argument. \n\nExample: python '
-              'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
+    print('Save the model...')
+    save_model(cv)
 
 
 if __name__ == '__main__':

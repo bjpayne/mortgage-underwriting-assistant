@@ -1,21 +1,90 @@
-{% extends "master.html" %}
-{% block title %}Results{% endblock %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block message %}
-    <h4 class="text-center">Message</h4>
-    <p class="text-center"><i>{{query}}</i></p>
-{% endblock %}
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+              crossorigin="anonymous"
+        >
 
-{% block content %}
-    <h1 class="text-center">Results</h1>
+        <!-- Bootstrap icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-    <ul id="message-results" class="list-group list-group-flush mb-5">
-        {% for category, classification in classification_result.items() %}
-            {% if classification == 1 %}
-                <li class="list-group-item list-group-item-danger text-center">{{category.replace('_', ' ').title()}}</li>
-            {% else %}
-                <li class="list-group-item list-group-item-light text-center">{{category.replace('_', ' ').title()}}</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-{% endblock %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <title>AutoWrite</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/"><img src="{{ url_for('static', filename='icon.png') }}">AutoWrite</a>
+                <a class="nav-link align-end" href="https://github.com/bjpayne/mortgage-underwriting-assistant"><i class="bi bi-github"></i></a>
+            </div>
+        </nav>
+
+        <main class="mb-5 d-flex" id="app">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="sidebar" class="d-none d-md-block col col-md-2">
+                        <div class="sidebar-link">
+                            <a href="/">AutoWrite Dashboard</a>
+                        </div>
+                    </div>
+                    <div id="content" class="d-flex flex-column col col-sm-12 col-md-10 mt-3">
+                        <h3 class="mb-2">AutoWrite Score</h3>
+                        <p>Recommendation: {{ 'Deny' if status == 0 else 'Approve' }}</p>
+                        <pre>{{ form_data }}</pre>
+
+                        <footer class="text-center">
+                            <a href="https://www.flaticon.com/free-animated-icons/user" title="user animated icons">User
+                                animated icons created by Freepik - Flaticon</a>
+                            <br>
+                            &copy; Ben Payne {{ now.year }}
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Jquery -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"
+        ></script>
+
+        <!-- Vue -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.js"
+                integrity="sha256-T3nUjmQxnOjzHxjuh3cHG9MpgOURumsZOuLHDQTef9I=" crossorigin="anonymous"
+        ></script>
+
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+                crossorigin="anonymous"
+        ></script>
+
+        <!-- Plotly -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+        <!-- Accounting.js -->
+        <script src="{{ url_for('static', filename='accounting.min.js') }}"></script>
+
+        <!-- jQuery Mask -->
+        <script src="{{ url_for('static', filename='jquery.mask.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+        <!--        <script type="text/javascript">-->
+        <!--            let graphs = {{graphJSON | safe}};-->
+
+        <!--            for(let i in graphs) {-->
+        <!--                Plotly.plot('graph-'+i, graphs[i].data, graphs[i].layout);-->
+        <!--            }-->
+        <!--        </script>-->
+    </body>
+</html>

@@ -94,7 +94,7 @@ def auto_write():
 
 
 def main():
-    app.run(host='127.0.0.1', port=3000, debug=True)
+    app.run(threaded=True, port=5000)
 
 
 if __name__ == '__main__':

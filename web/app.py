@@ -12,7 +12,7 @@ from web.providers.ResultsProvider import ResultsProvider
 WEB_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Load model
-model = joblib.load(f"{WEB_ROOT_DIR}/../models/model.sav")
+model = joblib.load(f'{WEB_ROOT_DIR}/../models/model.sav')
 
 # Instantiate app
 app = Flask(__name__)
@@ -65,7 +65,7 @@ def auto_write():
     status = model.predict(np.array(prediction_values).astype(float).reshape(1, -1))[0]
 
     # load the cleaned data for results plots
-    dataset = pd.read_csv('../data/processed_data.csv')
+    dataset = pd.read_csv(f'{WEB_ROOT_DIR}/../data/processed_data.csv')
 
     results_provider = ResultsProvider(dataset, status, request)
 

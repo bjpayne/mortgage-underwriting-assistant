@@ -96,12 +96,14 @@ div#content { padding: 0 3% }
     text-transform: uppercase;
 }
 
-.card .card-notes {
+.card .card-notes,
+.modal-footer .notes {
     font-family: monospace;
     font-size: 14px;
 }
 
-.card .card-notes>span { margin-right: 20px }
+.card .card-notes>span,
+.modal-footer.card-notes>span { margin-right: 20px }
 
 .fullscreen-plot { cursor: pointer }
 .fullscreen-plot:hover { color: var(--main-bg-color) }

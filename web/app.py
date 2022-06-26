@@ -1,3 +1,4 @@
+import os
 import joblib
 import re
 import numpy as np
@@ -7,8 +8,11 @@ from flask import Flask, render_template, request
 from datetime import datetime
 from web.providers.ResultsProvider import ResultsProvider
 
+# Set the web root directory
+WEB_ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Load model
-model = joblib.load("../models/model.sav")
+model = joblib.load(f"{WEB_ROOT_DIR}/../models/model.sav")
 
 # Instantiate app
 app = Flask(__name__)

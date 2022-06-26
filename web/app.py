@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from flask import Flask
-from flask import render_template, request, jsonify
+from flask import render_template, request
 from datetime import datetime
 from providers.ResultsProvider import ResultsProvider
 

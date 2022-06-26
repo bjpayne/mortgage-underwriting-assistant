@@ -5,7 +5,7 @@ import pandas as pd
 
 from flask import Flask, render_template, request
 from datetime import datetime
-from providers.ResultsProvider import ResultsProvider
+from web.providers.ResultsProvider import ResultsProvider
 
 # Load model
 model = joblib.load("../models/model.sav")

@@ -3,14 +3,14 @@ import re
 import numpy as np
 import pandas as pd
 
-from flask import Flask
-from flask import render_template, request
+from flask import Flask, render_template, request
 from datetime import datetime
 from providers.ResultsProvider import ResultsProvider
 
-# load model
+# Load model
 model = joblib.load("../models/model.sav")
 
+# Instantiate app
 app = Flask(__name__)
 
 

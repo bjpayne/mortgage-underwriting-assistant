@@ -6,7 +6,7 @@
 {% elif status == 1 %}
     <p class="lead">Recommendation: <span class="text-success">Approve</span></p>
 {% endif %}
-<pre>{{ form_data }}</pre>
+<p>Review some of the key metrics below for insight into the recommendation</p>
 
 <div id="result-plots" class="row mb-5">
     <!-- Pre approval -->
@@ -53,7 +53,12 @@
             </h5>
             <div class="card-body">
                 <div id="negative-amortization-plot"></div>
-                <div class="card-notes">{{ negative_amortization_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ negative_amortization_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#negative-amortization-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -66,7 +71,12 @@
             </h5>
             <div class="card-body">
                 <div id="upfront-charges-plot"></div>
-                <div class="card-notes">{{ upfront_charges_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ upfront_charges_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#upfront-charges-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -79,7 +89,12 @@
             </h5>
             <div class="card-body">
                 <div id="interest-only-plot"></div>
-                <div class="card-notes">{{ interest_only_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ interest_only_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#interest-only-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -92,7 +107,12 @@
             </h5>
             <div class="card-body">
                 <div id="income-plot"></div>
-                <div class="card-notes">{{ income_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ income_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#income-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -105,7 +125,12 @@
             </h5>
             <div class="card-body">
                 <div id="credit-score-plot"></div>
-                <div class="card-notes">{{ credit_score_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ credit_score_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#credit-score-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -118,7 +143,48 @@
             </h5>
             <div class="card-body">
                 <div id="property-value-plot"></div>
-                <div class="card-notes">{{ property_value_notes }}</div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ property_value_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#property-value-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan amount -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>Loan amount:</span> <span>{{ form_data['loan_amount'] }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="loan-amount-plot"></div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ loan_amount_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#loan-amount-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LTV -->
+    <div class="col-sm-12 col-md-3 mb-3 d-flex">
+        <div class="card flex-grow-1">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                <span>LTV:</span> <span>{{ form_data['ltv'] }}</span>
+            </h5>
+            <div class="card-body">
+                <div id="ltv-plot"></div>
+                <div class="card-notes d-flex justify-content-between align-items-center">
+                    <span>{{ ltv_notes }}</span>
+                    <i class="bi bi-fullscreen fullscreen-plot" data-bs-toggle="modal"
+                       data-bs-target="#ltv-fullscreen" title="Fullscreen"
+                    ></i>
+                </div>
             </div>
         </div>
     </div>
@@ -161,6 +227,190 @@
                 </div>
                 <div class="modal-body d-flex align-items-center justify-content-around">
                     <div id="line-of-credit-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Negative amortization fullscreen -->
+    <div class="modal fade" id="negative-amortization-fullscreen" tabindex="-1"
+         aria-labelledby="negative-amortization-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="negative-amortization-fullscreen-title"
+                    >
+                        <span>Negative amortization?</span> <span>{{ 'No' if form_data['negative_amortization'] == '0' else 'Yes' }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="negative-amortization-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upfront charges fullscreen -->
+    <div class="modal fade" id="upfront-charges-fullscreen" tabindex="-1"
+         aria-labelledby="upfront-charges-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="upfront-charges-fullscreen-title"
+                    >
+                        <span>Upfront charges:</span> <span>{{ form_data['upfront_charges'] }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="upfront-charges-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interest only fullscreen -->
+    <div class="modal fade" id="interest-only-fullscreen" tabindex="-1"
+         aria-labelledby="negative-amortization-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="interest-only-fullscreen-title"
+                    >
+                        <span>Interest only?</span> <span>{{ 'No' if form_data['interest_only'] == '0' else 'Yes' }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="interest-only-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income fullscreen -->
+    <div class="modal fade" id="income-fullscreen" tabindex="-1"
+         aria-labelledby="income-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="income-fullscreen-title"
+                    >
+                        <span>Income:</span> <span>{{ form_data['income'] }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="income-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credit score fullscreen -->
+    <div class="modal fade" id="credit-score-fullscreen" tabindex="-1"
+         aria-labelledby="credit-score-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="credit-score-fullscreen-title"
+                    >
+                        <span>Credit score:</span> <span>{{ form_data['credit_score'] }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="credit-score-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property value fullscreen -->
+    <div class="modal fade" id="property-value-fullscreen" tabindex="-1"
+         aria-labelledby="property-value-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="property-value-fullscreen-title"
+                    >
+                        <span>Property value:</span> <span>{{ form_data['property_value'] }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="property-value-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan amount fullscreen -->
+    <div class="modal fade" id="loan-amount-fullscreen" tabindex="-1"
+         aria-labelledby="loan-amount-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="loan-amount-fullscreen-title"
+                    >
+                        <span>Loan amount:</span> <span>{{ form_data['loan_amount'] }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="loan-amount-plot-fullscreen"></div>
+                </div>
+                <div class="modal-footer">
+                    <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LTV fullscreen -->
+    <div class="modal fade" id="ltv-fullscreen" tabindex="-1"
+         aria-labelledby="ltv-fullscreen-title" aria-hidden="true"
+    >
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex justify-content-between align-items-center w-100"
+                        id="ltv-fullscreen-title"
+                    >
+                        <span>LTV:</span> <span>{{ form_data['ltv'] }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-around">
+                    <div id="ltv-plot-fullscreen"></div>
                 </div>
                 <div class="modal-footer">
                     <i class="bi bi-fullscreen-exit" title="Exit fullscreen" data-bs-dismiss="modal"></i>
@@ -247,6 +497,7 @@
         }];
 
         Plotly.newPlot('negative-amortization-plot', data, layout);
+        Plotly.newPlot('negative-amortization-plot-fullscreen', data, layoutFullscreen);
     })();
 
     // Upfront charges
@@ -265,10 +516,13 @@
 
         // clone layout object
         let _layout = {...layout}
+        let _layoutFullscreen = {...layoutFullscreen}
 
         _layout['title'] = 'Apps by upfront charge range';
+        _layoutFullscreen['title'] = _layout['title']
 
         Plotly.newPlot('upfront-charges-plot', data, _layout);
+        Plotly.newPlot('upfront-charges-plot-fullscreen', data, _layoutFullscreen);
     })();
 
     // Interest only
@@ -288,6 +542,7 @@
         }];
 
         Plotly.newPlot('interest-only-plot', data, layout);
+        Plotly.newPlot('interest-only-plot-fullscreen', data, layoutFullscreen);
     })();
 
     // Income
@@ -306,10 +561,13 @@
 
         // clone layout object
         let _layout = {...layout}
+        let _layoutFullscreen = {...layoutFullscreen}
 
         _layout['title'] = 'Apps by income range';
+        _layoutFullscreen['title'] = _layout['title']
 
         Plotly.newPlot('income-plot', data, _layout);
+        Plotly.newPlot('income-plot-fullscreen', data, _layoutFullscreen);
     })();
 
     // Credit score
@@ -328,10 +586,13 @@
 
         // clone layout object
         let _layout = {...layout}
+        let _layoutFullscreen = {...layoutFullscreen}
 
         _layout['title'] = 'Apps by credit score';
+        _layoutFullscreen['title'] = _layout['title']
 
         Plotly.newPlot('credit-score-plot', data, _layout);
+        Plotly.newPlot('credit-score-plot-fullscreen', data, _layoutFullscreen);
     })();
 
     // Property value
@@ -350,10 +611,63 @@
 
         // clone layout object
         let _layout = {...layout}
+        let _layoutFullscreen = {...layoutFullscreen}
 
         _layout['title'] = 'Apps by property value ranges';
+        _layoutFullscreen['title'] = _layout['title']
 
         Plotly.newPlot('property-value-plot', data, _layout);
+        Plotly.newPlot('property-value-plot-fullscreen', data, _layoutFullscreen);
+    })();
+
+    // Loan amount
+    (function () {
+        let x = {{ loan_amount_data['x'] }}
+        let y = {{ loan_amount_data['y'] }}
+
+        let data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: '#33cccc'
+            }
+        }];
+
+        // clone layout object
+        let _layout = {...layout}
+        let _layoutFullscreen = {...layoutFullscreen}
+
+        _layout['title'] = 'Apps by loan amount ranges';
+        _layoutFullscreen['title'] = _layout['title']
+
+        Plotly.newPlot('loan-amount-plot', data, _layout);
+        Plotly.newPlot('loan-amount-plot-fullscreen', data, _layoutFullscreen);
+    })();
+
+    // LTV
+    (function () {
+        let x = {{ ltv_data['x'] }}
+        let y = {{ ltv_data['y'] }}
+
+        let data = [{
+            x: x,
+            y: y,
+            type: 'bar',
+            marker: {
+                color: '#33cccc'
+            }
+        }];
+
+        // clone layout object
+        let _layout = {...layout}
+        let _layoutFullscreen = {...layoutFullscreen}
+
+        _layout['title'] = 'Apps by LTV range';
+        _layoutFullscreen['title'] = _layout['title']
+
+        Plotly.newPlot('ltv-plot', data, _layout);
+        Plotly.newPlot('ltv-plot-fullscreen', data, _layoutFullscreen);
     })();
 </script>
 {% endblock %}

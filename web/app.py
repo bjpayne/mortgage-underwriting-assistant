@@ -83,6 +83,10 @@ def auto_write():
         'credit_score_data': results_provider.credit_score_data(),
         'property_value_notes': results_provider.property_value_notes(),
         'property_value_data': results_provider.property_value_data(),
+        'loan_amount_notes': results_provider.loan_amount_notes(),
+        'loan_amount_data': results_provider.loan_amount_data(),
+        'ltv_notes': results_provider.ltv_notes(),
+        'ltv_data': results_provider.ltv_data(),
     }
 
     # This will render the results.html Please see that file.

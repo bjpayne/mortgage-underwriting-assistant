@@ -120,7 +120,7 @@ class ResultsProvider:
 
         percentage = np.round(percentage * 100, 2)
 
-        note = f"{percentage}% of applicants have a credit score of {credit_score}"
+        note = f"{percentage}% of {self.status_text} applicants have a credit score of {credit_score}"
 
         return note
 
@@ -160,6 +160,70 @@ class ResultsProvider:
             'x': [*bins],
             'y': self.dataset[self.dataset['status'] == self.status]['property_value'].value_counts(bins=bins)
                 .to_list(),
+        }
+
+        return data
+
+    def loan_amount_notes(self):
+        loan_amount = float(re.sub('[^0-9.]', '', self.request.form['loan_amount']))
+
+        note = f" applications have a loan amount of {self.request.form['loan_amount']}"
+
+        series = self.dataset[(self.dataset['status'] == self.status) &
+                              (self.dataset['loan_amount'] == loan_amount)]['property_value'] \
+            .value_counts(normalize=True)
+
+        if series.empty or series[0] == 0:
+            return f"0% of {self.status_text} {note}"
+
+        percentage = (series[loan_amount] / self.dataset[(self.dataset['status'] == self.status)]['loan_amount']
+                      .shape[0]) * 100
+
+        percentage = np.round(percentage, 2)
+
+        note = f"{percentage}% of {self.status_text} {note}"
+
+        return note
+
+    def loan_amount_data(self):
+        bins = range(0, int(self.dataset[self.dataset['status'] == self.status]['loan_amount'].max()), 2500)
+
+        data = {
+            'x': [*bins],
+            'y': self.dataset[self.dataset['status'] == self.status]['loan_amount'].value_counts(bins=bins)
+                .to_list(),
+        }
+
+        return data
+
+    def ltv_notes(self):
+        ltv = float(self.request.form['ltv'])
+
+        series = self.dataset[(self.dataset['status'] == self.status) & (self.dataset['ltv'] >= ltv)]['ltv']\
+            .unique().tolist()
+
+        if len(series) == 0:
+            return f"0% of applications have an LTV of {self.request.form['ltv']} or greater"
+
+        percentage = np.round((len(series) / self.dataset[(self.dataset['status'] == self.status)]['ltv']
+                               .shape[0]) * 100, 2)
+
+        note = f"{percentage}% of {self.status_text} applications have an LTV of {self.request.form['ltv']} or greater"
+
+        return note
+
+    def ltv_data(self):
+        ltv = float(self.request.form['ltv'])
+
+        series = np.round(
+            self.dataset[(self.dataset['status'] == 0) & (self.dataset['ltv'] >= ltv)]['ltv'].unique().tolist(),
+            0).tolist()
+
+        value_counts = np.unique(series, return_counts=True)
+
+        data = {
+            'x': value_counts[0].tolist(),
+            'y': value_counts[1].tolist(),
         }
 
         return data

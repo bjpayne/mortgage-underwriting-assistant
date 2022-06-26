@@ -152,6 +152,8 @@ def interest_rate(dataset):
     dataset.loc[(dataset['status'] == 0) & (dataset['rate_of_interest'].isna()), 'rate_of_interest'] = status0_median
     dataset.loc[(dataset['status'] == 1) & (dataset['rate_of_interest'].isna()), 'rate_of_interest'] = status1_median
 
+    dataset.rename(columns={'rate_of_interest': 'interest_rate'}, inplace=True)
+
 
 def interest_rate_spread(dataset):
     """
@@ -371,6 +373,8 @@ def dti(dataset):
 
     dataset.loc[(dataset['status'] == 0) & (dataset['dtir1'].isna()), 'dtir1'] = status0_median
     dataset.loc[(dataset['status'] == 1) & (dataset['dtir1'].isna()), 'dtir1'] = status1_median
+
+    dataset.rename(columns={'dtir1': 'dti'}, inplace=True)
 
 
 def fair_credit(dataset):

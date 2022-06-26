@@ -32,37 +32,37 @@ def index():
 @app.route('/auto-write', methods=['POST'])
 def auto_write():
     prediction_values = [
-        request.form['loan_limit'],
-        request.form['pre_approval'],
-        request.form['loan_type'],
-        request.form['loan_purpose'],
-        request.form['line_of_credit'],
-        request.form['commercial_loan'],
-        re.sub('[^0-9.]', '', request.form['loan_amount']),
-        request.form['interest_rate'],
-        request.form['interest_rate_spread'],
-        re.sub('[^0-9.]', '', request.form['upfront_charges']),
-        request.form['term'],
-        request.form['negative_amortization'],
-        request.form['interest_only'],
-        request.form['lump_sum_payment'],
-        re.sub('[^0-9.]', '', request.form['property_value']),
-        request.form['construction_type'],
-        request.form['occupancy_type'],
-        request.form['property_type'],
-        request.form['units'],
-        re.sub('[^0-9.]', '', request.form['income']),
-        request.form['credit_type'],
-        request.form['credit_score'],
-        request.form['co_borrower_credit_type'],
-        request.form['application_taken'],
-        request.form['ltv'],
-        request.form['deposit_type'],
-        request.form['dti'],
+        float(request.form['loan_limit']),
+        int(request.form['pre_approval']),
+        int(request.form['loan_type']),
+        int(request.form['loan_purpose']),
+        int(request.form['line_of_credit']),
+        int(request.form['commercial_loan']),
+        float(re.sub('[^0-9.]', '', request.form['loan_amount'])),
+        float(request.form['interest_rate']),
+        float(request.form['interest_rate_spread']),
+        float(re.sub('[^0-9.]', '', request.form['upfront_charges'])),
+        int(request.form['term']),
+        int(request.form['negative_amortization']),
+        int(request.form['interest_only']),
+        int(request.form['lump_sum_payment']),
+        float(re.sub('[^0-9.]', '', request.form['property_value'])),
+        int(request.form['construction_type']),
+        int(request.form['occupancy_type']),
+        int(request.form['property_type']),
+        int(request.form['units']),
+        float(re.sub('[^0-9.]', '', request.form['income'])),
+        int(request.form['credit_type']),
+        int(request.form['credit_score']),
+        int(request.form['co_borrower_credit_type']),
+        int(request.form['application_taken']),
+        float(request.form['ltv']),
+        int(request.form['deposit_type']),
+        float(request.form['dti']),
     ]
 
     # use model to predict classification for query
-    status = model.predict(np.array(prediction_values).reshape(1, -1))[0]
+    status = model.predict(np.array(prediction_values).astype(float).reshape(1, -1))[0]
 
     # load the cleaned data for results plots
     dataset = pd.read_csv('../data/processed_data.csv')
@@ -98,4 +98,4 @@ def auto_write():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    app.run(threaded=True, port=5000, debug=True)

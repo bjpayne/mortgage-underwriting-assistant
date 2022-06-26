@@ -3,9 +3,10 @@ import pickle
 
 import pandas as pd
 
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, r2_score
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
 
 
 def load_data():
@@ -22,10 +23,32 @@ def load_data():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=40)
 
+    # Rest indices from dropped columns
     X_train.reset_index(inplace=True, drop=True)
     X_test.reset_index(inplace=True, drop=True)
     y_train.reset_index(inplace=True, drop=True)
     y_test.reset_index(inplace=True, drop=True)
+
+    scale_columns = [
+        'loan_amount',
+        'ltv',
+        'upfront_charges',
+        'property_value',
+        'income',
+        'interest_rate',
+        'term',
+        'credit_score',
+        'dti'
+    ]
+
+    train_scaler = StandardScaler(with_mean=True, with_std=True)
+    test_scaler = StandardScaler(with_mean=True, with_std=True)
+
+    train_scaler = train_scaler.fit(X_train[scale_columns])
+    X_train[scale_columns] = train_scaler.transform(X_train[scale_columns].copy())
+
+    test_scaler = test_scaler.fit(X_test[scale_columns])
+    X_test[scale_columns] = test_scaler.transform(X_test[scale_columns].copy())
 
     return dataset, X_train, X_test, y_train, y_test
 
@@ -96,8 +119,13 @@ def evaluate_model(cv, X_test, y_test):
     """
     y_pred = cv.predict(X_test.to_numpy())
 
+    # Classification report
     print(classification_report(y_test, y_pred))
-    print()
+
+    # R squared score
+    r2 = r2_score(y_test.to_numpy(), y_pred)
+
+    print(f"R-squared score: {r2}")
 
 
 def save_model(model):
@@ -108,7 +136,7 @@ def save_model(model):
         model - sklearn.Pipeline
         model_filepath - string
     """
-    filename = 'model.sav';
+    filename = 'model.sav'
 
     pickle.dump(model, open(filename, 'wb'))
 

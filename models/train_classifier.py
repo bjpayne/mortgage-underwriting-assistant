@@ -2,8 +2,9 @@
 import pickle
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
-from sklearn.metrics import classification_report, r2_score
+from sklearn.metrics import classification_report, r2_score, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
@@ -41,14 +42,12 @@ def load_data():
         'dti'
     ]
 
-    train_scaler = StandardScaler(with_mean=True, with_std=True)
-    test_scaler = StandardScaler(with_mean=True, with_std=True)
+    scaler = StandardScaler(with_mean=True, with_std=True)
 
-    train_scaler = train_scaler.fit(X_train[scale_columns])
-    X_train[scale_columns] = train_scaler.transform(X_train[scale_columns].copy())
+    scaler = scaler.fit(X_train[scale_columns])
 
-    test_scaler = test_scaler.fit(X_test[scale_columns])
-    X_test[scale_columns] = test_scaler.transform(X_test[scale_columns].copy())
+    X_train[scale_columns] = scaler.transform(X_train[scale_columns].copy())
+    X_test[scale_columns] = scaler.transform(X_test[scale_columns].copy())
 
     return dataset, X_train, X_test, y_train, y_test
 
@@ -66,8 +65,11 @@ def build_model(X_train, X_test, y_train, y_test):
     classifier = MLPClassifier(
         hidden_layer_sizes=(20, 20),  # number of neurons in the perceptron
         early_stopping=True,  # after n_iter_no_change epochs stop fitting
+        learning_rate='adaptive',  # splits off a set (val._fraction) and tests against improvement on that
+        tol=1e-6,  # the tolerance for the sgd steps
+        validation_fraction=2e-1,  # the split off set for adaptive learning rate
+        max_iter=max_iter,  # total number of epochs
         n_iter_no_change=50,  # number of epochs to stop after
-        max_iter=max_iter  # total number of epochs
     )
 
     print(classifier.fit(X_train.to_numpy(), y_train.to_numpy()))
@@ -124,8 +126,13 @@ def evaluate_model(cv, X_test, y_test):
 
     # R squared score
     r2 = r2_score(y_test.to_numpy(), y_pred)
-
     print(f"R-squared score: {r2}")
+
+    # Confusion matrix
+    _confusion_matrix = confusion_matrix(y_test, y_pred, labels=cv.classes_)
+    disp = ConfusionMatrixDisplay(confusion_matrix=_confusion_matrix, display_labels=cv.classes_)
+    disp.plot()
+    plt.show()
 
 
 def save_model(model):

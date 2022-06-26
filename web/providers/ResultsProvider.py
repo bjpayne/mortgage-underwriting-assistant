@@ -46,7 +46,7 @@ class ResultsProvider:
                               (self.dataset['upfront_charges'] == upfront_charges)]['upfront_charges'] \
             .value_counts(normalize=True)
 
-        if series.empty:
+        if series.empty or upfront_charges not in series:
             return f"0% of {self.status_text} {note}"
 
         percentage = (series[upfront_charges] / self.dataset[(self.dataset['status'] == self.status)]['upfront_charges']
@@ -88,7 +88,7 @@ class ResultsProvider:
                               (self.dataset['income'] == income)]['income'] \
             .value_counts(normalize=True)
 
-        if series.empty:
+        if series.empty or income not in series:
             return f"0% of {self.status_text} {note}"
 
         percentage = (series[income] / self.dataset[(self.dataset['status'] == self.status)]['income']
@@ -141,7 +141,7 @@ class ResultsProvider:
                               (self.dataset['property_value'] == upfront_charges)]['property_value'] \
             .value_counts(normalize=True)
 
-        if series.empty:
+        if series.empty or upfront_charges not in series:
             return f"0% of {self.status_text} {note}"
 
         percentage = (series[upfront_charges] / self.dataset[(self.dataset['status'] == self.status)]['property_value']
@@ -173,7 +173,7 @@ class ResultsProvider:
                               (self.dataset['loan_amount'] == loan_amount)]['property_value'] \
             .value_counts(normalize=True)
 
-        if series.empty:
+        if series.empty or loan_amount not in series:
             return f"0% of {self.status_text} {note}"
 
         percentage = (series[loan_amount] / self.dataset[(self.dataset['status'] == self.status)]['loan_amount']

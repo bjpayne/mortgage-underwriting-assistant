@@ -97,9 +97,5 @@ def auto_write():
     return render_template('results.html', **template_data)
 
 
-def main():
-    app.run(threaded=True, port=5000)
-
-
 if __name__ == '__main__':
-    main()
+    app.run(threaded=True, port=5000)

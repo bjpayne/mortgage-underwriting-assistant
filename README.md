@@ -48,8 +48,8 @@ This is an interesting concept that warrants further exploration and refinement.
 underwriting regulations this system could augment the underwriting pipelines of financial institutions,
 and reduce costs and risk.
 
-### Project Details
-#### Web App
+## Deliverables
+### Web App
 [https://autowrite.benpayne.dev](https://autowrite.benpayne.dev)
 
 Fill in the form fields and click 'AutoWrite'
@@ -62,7 +62,7 @@ Fill in the form fields and click 'AutoWrite'
 
 ![Results](web/static/results_example.jpg)
 
-#### Scripts
+### Scripts
 Activate venv for your environment, install the dependencies and run the scripts
 
 Unix/macOS

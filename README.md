@@ -3,7 +3,7 @@
 
 ### Project Details
 #### Web App
-[AutoWrite](https://autowrite.benpayne.dev)
+[https://autowrite.benpayne.dev](https://autowrite.benpayne.dev)
 
 Fill in the form fields and click 'AutoWrite'
 

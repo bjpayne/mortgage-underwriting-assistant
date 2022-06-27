@@ -1,6 +1,53 @@
 # Data Science Nano Degree
 ## Project: Capstone
 
+### Motivation
+Need for an AI underwriting assistant that could overlay the guidelines and give additional insights not immediately
+obvious from the application.
+
+### Project definition
+Take a loan default dataset, ETL it and then load it into a Multilayer Perceptron NN. Then using the trained data give
+insights into new mortgage application data and provide a recommendation underwriting action.
+
+### Analysis
+This is a POC and is not ready for production. The dataset while good enough for getting this off the ground is only for
+a single year and is not evenly distributed. That being said this will predict with 99% accuracy. That prediction is
+against unbalanced data though. Further development of this data set is needed before this can be used in a production
+environment.
+
+### Fair credit reporting
+Three labels in this dataset were dropped in order to prevent running into FCRA violations. Gender, age and region were
+removed from the data before training the model. This is because credit cannot be issued based on these labels. Training
+the model with these labels could have resulted in disparate impact or treatment which could be an FCRA violation.
+
+### Results
+Classification report:
+```
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     33702
+           1       1.00      1.00      1.00     10899
+
+    accuracy                           1.00     44601
+   macro avg       1.00      1.00      1.00     44601
+weighted avg       1.00      1.00      1.00     44601
+```
+
+R-squared score:
+
+```
+0.9997571532671935
+```
+
+Confusion matrix:
+
+![Confusion Matrix](models/confusion_matrix.png)
+
+### Conclusion
+This is an interesting concept that warrants further exploration and refinement. With the goal of being an overlay to
+underwriting regulations this system could augment the underwriting pipelines of financial institutions,
+and reduce costs and risk.
+
 ### Project Details
 #### Web App
 [https://autowrite.benpayne.dev](https://autowrite.benpayne.dev)
@@ -41,53 +88,6 @@ python -m pip install -r requirements.txt
 python data\process_data.py
 python models\train_classifier.py
 ```
-
-### Motivation
-Need for an AI underwriting assistant that could overlay the guidelines and give additional insights not immediately
-obvious from the application.
-
-### Project definition
-Take a loan default dataset, ETL it and then load it into a Multilayer Perceptron NN. Then using the trained data give
-insights into new mortgage application data and provide a recommendation underwriting action.
-
-### Analysis
-This is a POC and is not ready for production. The dataset while good enough for getting this off the ground is only for
-a single year and is not evenly distributed. That being said this will predict with 99% accuracy. That prediction is
-against unbalanced data though. Further development of this data set is needed before this can be used in a production
-environment.
-
-### Fair credit reporting
-Three labels in this dataset were dropped in order to prevent running into FCRA violations. Gender, age and region were
-removed from the data before training the model. This is because credit cannot be issued based on these labels. Training
-the model with these labels could have resulted in disparate impact or treatment which could be an FCRA violation.
-
-### Conclusion
-This is an interesting concept that warrants further exploration and refinement. With the goal of being an overlay to
-underwriting regulations this system could augment the underwriting pipelines of financial institutions,
-and reduce costs and risk.
-
-### Results
-Classification report:
-```
-              precision    recall  f1-score   support
-
-           0       1.00      1.00      1.00     33702
-           1       1.00      1.00      1.00     10899
-
-    accuracy                           1.00     44601
-   macro avg       1.00      1.00      1.00     44601
-weighted avg       1.00      1.00      1.00     44601
-```
-
-R-squared score:
-
-```
-0.9997571532671935
-```
-
-Confusion matrix:
-
-![Confusion Matrix](models/confusion_matrix.png)
 
 ### Project Files
 ```

@@ -1,4 +1,5 @@
 # import libraries
+import os
 import pandas as pd
 import numpy as np
 
@@ -10,7 +11,9 @@ def load_data():
     OUTPUT
     dataset - Pandas.DataFrame
     """
-    dataset = pd.read_csv('data.csv')
+    script_root = os.path.dirname(os.path.abspath(__file__))
+
+    dataset = pd.read_csv(f'{script_root}/data.csv')
 
     return dataset
 
@@ -395,7 +398,14 @@ def save_data(dataset):
     INPUT
     dataset - Pandas.DataFrame
     """
-    dataset.to_csv('processed_data.csv', index=False)
+    script_root = os.path.dirname(os.path.abspath(__file__))
+
+    file_path = f'{script_root}/processed_data.csv'
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    dataset.to_csv(file_path, index=False, mode='w+')
 
 
 def main():

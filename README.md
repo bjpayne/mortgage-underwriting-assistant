@@ -1,6 +1,47 @@
 # Data Science Nano Degree
 ## Project: Capstone
 
+### Project Details
+#### Web App
+[AutoWrite](https://autowrite.benpayne.dev)
+
+Fill in the form fields and click 'AutoWrite'
+
+![Example](web/static/index_example.png)
+
+1. You'll get a dashboard with various key metrics and how they compare with similar apps with the recommendation.
+2. Clicking the full screen icon in the lower right corner will expand the graph to make it easier to explore.
+3. Clicking the 'AutoWrite Dashboard' link on the left will bring you back to the form
+
+![Results](web/static/results_example.jpg)
+
+#### Scripts
+Activate venv for your environment, install the dependencies and run the scripts
+
+Unix/macOS
+```bash
+source venv/bin/activate
+
+which python
+
+python -m pip install -r requirements.txt
+
+python data/process_data.py
+python models/train_classifier.py
+```
+
+Windows
+```bash
+.\venv\Scripts\activate
+
+where python
+
+python -m pip install -r requirements.txt
+
+python data\process_data.py
+python models\train_classifier.py
+```
+
 ### Motivation
 Need for an AI underwriting assistant that could overlay the guidelines and give additional insights not immediately
 obvious from the application.
@@ -27,6 +68,7 @@ and reduce costs and risk.
 
 ### Results
 Classification report:
+```
               precision    recall  f1-score   support
 
            0       1.00      1.00      1.00     33702
@@ -35,12 +77,19 @@ Classification report:
     accuracy                           1.00     44601
    macro avg       1.00      1.00      1.00     44601
 weighted avg       1.00      1.00      1.00     44601
+```
 
-R-squared score: 0.9997571532671935
+R-squared score:
 
-[Confusion Matrix](https://github.com/bjpayne/mortgage-underwriting-assistant/blob/master/data/confusion_matrix.png)
+```
+0.9997571532671935
+```
 
-### Files
+Confusion matrix:
+
+![Confusion Matrix](models/confusion_matrix.png)
+
+### Project Files
 ```
 project
 │   .gitattributes
@@ -49,8 +98,9 @@ project
 │   etl_notebook.py         - ETL notebook in Python script format
 │   Procfile                - Heroku app runtime
 │   README.md               - Readme file
-│   report-notebook.ipynb   - Readme file
 │   report.pdf              - Project report
+│   report-notebook.ipynb   - Readme file
+│   requirements.txt        - project libraries (py -m pip install -r requirements.txt)
 │
 └───data
 │   │   confusion_matrix.png    - Confusion matrix artifact for reporting
@@ -86,13 +136,20 @@ project
 
 ### Libraries
 [Scikit-Learn](https://scikit-learn.org/stable/index.html)
+
 [Pandas](https://pandas.pydata.org/)
+
 [NumPy](https://numpy.org/)
+
 [Flask](https://flask.palletsprojects.com/en/2.1.x/)
+
 [Matplotlib](https://matplotlib.org/stable/index.html)
+
 [Plotly Javascript](https://plotly.com/javascript/)
+
 [Seaborn](https://seaborn.pydata.org/)
 
 ### Resources
 [Loan Default Dataset](https://www.kaggle.com/datasets/yasserh/loan-default-dataset)
+
 [Fair Credit Reporting Act](https://www.experian.com/blogs/ask-experian/credit-education/report-basics/fair-credit-reporting-act-fcra/#:~:text=The%20Fair%20Credit%20Reporting%20Act%20(FCRA)%20is%20a%20federal%20law,collect%20in%20your%20consumer%20reports.)

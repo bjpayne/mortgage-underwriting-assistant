@@ -1,5 +1,6 @@
 # import libraries
 import pickle
+import os
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,7 +18,9 @@ def load_data():
     OUTPUT
     dataset - Pandas.DataFrame
     """
-    dataset = pd.read_csv('../data/processed_data.csv')
+    script_root = os.path.dirname(os.path.abspath(__file__))
+
+    dataset = pd.read_csv(f'{script_root}/../data/processed_data.csv')
 
     y = dataset["status"].copy()
     X = dataset.drop(["status", ], axis=1, inplace=False).copy()
@@ -134,6 +137,9 @@ def evaluate_model(cv, X_test, y_test):
     disp.plot()
     plt.show()
 
+    script_root = os.path.dirname(os.path.abspath(__file__))
+    plt.savefig(f'{script_root}/models/confusion_matrix.png')
+
 
 def save_model(model):
     """
@@ -143,9 +149,14 @@ def save_model(model):
         model - sklearn.Pipeline
         model_filepath - string
     """
-    filename = 'model.sav'
+    script_root = os.path.dirname(os.path.abspath(__file__))
 
-    pickle.dump(model, open(filename, 'wb'))
+    file_path = f'{script_root}/model.sav'
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    pickle.dump(model, open(file_path, 'wb'))
 
 
 def main():

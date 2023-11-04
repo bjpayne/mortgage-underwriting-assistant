@@ -14,7 +14,7 @@ matplotlib==3.5.2
 numpy==1.23.0
 packaging==21.3
 pandas==1.4.3
-Pillow==9.1.1
+Pillow==10.0.0
 pyparsing==3.0.9
 python-dateutil==2.8.2
 pytz==2022.1
@@ -23,5 +23,5 @@ scipy==1.8.1
 seaborn==0.11.2
 six==1.16.0
 threadpoolctl==3.1.0
-Werkzeug==2.1.2
+Werkzeug==3.0.1
 zipp==3.8.0
